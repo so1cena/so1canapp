@@ -224,6 +224,57 @@
     flex-shrink: 0;
   }
 
+  /* ── DESCRIÇÃO ── */
+  .desc-box {
+    margin-top: 28px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 20px 24px;
+    max-width: 340px;
+    width: 100%;
+    text-align: center;
+    animation: fadeUp .8s .5s ease both;
+  }
+  .desc-title {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .desc-items {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .desc-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 14px;
+  }
+  .desc-price {
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: .3px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+  }
+  .desc-price strong {
+    color: #fff;
+    font-size: 18px;
+  }
+
   /* ── ANIMAÇÕES ── */
   @keyframes fadeDown {
     from { opacity:0; transform:translateY(-30px); }
@@ -269,6 +320,23 @@
     </a>
 
   </div>
+
+  <!-- DESCRIÇÃO -->
+  <div class="desc-box">
+    <p class="desc-title">Assista milhares de:</p>
+    <div class="desc-items">
+      <span>🎥 Filmes</span>
+      <span>📺 Séries</span>
+      <span>⚽ Canais ao vivo</span>
+    </div>
+    <div class="desc-checks">
+      <span>✅ Sem mensalidade</span>
+      <span>✅ Atualizações constantes</span>
+      <span>✅ Funciona em vários dispositivos</span>
+    </div>
+    <div class="desc-price">💰 Apenas <strong>R$30 REAIS</strong> — ACESSO VITALÍCIO</div>
+  </div>
+
 </div>
 
 <!-- CONTADOR DE DOWNLOADS -->
