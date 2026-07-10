@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Hacker - Isac Mods</title>
+    <!-- Ícones FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #00ff3c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Efeito de linhas correndo ao fundo (estilo hacker) */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid #00ff3c;
+            box-shadow: 0 0 20px #00ff3c;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            z-index: 3;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px #00ff3c;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* Estilo base dos botões */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: 1px solid #00ff3c;
+            border-radius: 5px;
+            color: #00ff3c;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        /* Cores quando os botões estão ativos para clicar */
+        .btn.active-yt1 { background: rgba(255, 0, 0, 0.2); border-color: #ff0000; color: #fff; cursor: pointer; }
+        .btn.active-yt2 { background: rgba(50, 50, 50, 0.4); border-color: #ffffff; color: #fff; cursor: pointer; }
+        .btn.active-wa { background: rgba(37, 211, 102, 0.2); border-color: #25d366; color: #fff; cursor: pointer; }
+        .btn.active-download { background: #00ff3c; color: #000; border-color: #00ff3c; font-size: 16px; box-shadow: 0 0 15px #00ff3c; cursor: pointer; }
+
+        /* Estado bloqueado (cinza) */
+        .disabled {
+            background: #1a1a1a !important;
+            border-color: #333 !important;
+            color: #555 !important;
+            cursor: not-allowed;
+            pointer-events: none; /* Impede clicar se tiver bloqueado */
+        }
+
+        /* Animação de Carregamento (Spinner) */
+        .loading-box {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 8px 0;
+            font-size: 13px;
+            color: #00ffff;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 255, 255, 0.2);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Ícone de check de sucesso */
+        .success-text {
+            color: #00ff3c;
+            font-size: 13px;
+            display: none;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>SISTEMA DE DOWNLOAD</h1>
+        <p class="subtitle">[ Fantasma Modz - Execute os passos ]</p>
+        
+        <!-- PASSO 1: CANAL 1 -->
+        <a href="https://www.youtube.com/@fantasmamdz" class="btn active-yt1" id="btn-s1" target="_blank" onclick="avancarPasso('s1')">
+            <span><i class="fa-brands fa-youtube"></i> 1. SEGUIR CANAL 1</span>
+            <i class="fa-solid fa-arrow-right" id="icon-s1"></i>
+        </a>
+        <div id="load-s1" class="loading-box"><div class="spinner"></div> Verificando inscrição...</div>
+        <div id="ok-s1" class="success-text"><i class="fa-solid fa-circle-check"></i> Canal 1 Concluído!</div>
+        
+        <!-- PASSO 2: CANAL 2 -->
+        <a href="https://www.youtube.com/@isacmodstvofcbr" class="btn disabled" id="btn-s2" target="_blank" onclick="avancarPasso('s2')">
+            <span><i class="fa-brands fa-youtube"></i> 2. SEGUIR CANAL 2</span>
+            <i class="fa-solid fa-lock" id="icon-s2"></i>
+        </a>
+        <div id="load-s2" class="loading-box"><div class="spinner"></div> Verificando inscrição...</div>
+        <div id="ok-s2" class="success-text"><i class="fa-solid fa-circle-check"></i> Canal 2 Concluído!</div>
+        
+        <!-- PASSO 3: GRUPO WHATSAPP -->
+        <a href="https://chat.whatsapp.com/Dbhks8oUoLED2yfqM2Z1Cy?s=cl&p=a&ilr=4&amv=2" class="btn disabled" id="btn-s3" target="_blank" onclick="avancarPasso('s3')">
+            <span><i class="fa-brands fa-whatsapp"></i> 3. ENTRAR NO GRUPO</span>
+            <i class="fa-solid fa-lock" id="icon-s3"></i>
+        </a>
+        <div id="load-s3" class="loading-box"><div class="spinner"></div> Validando entrada no grupo...</div>
+        <div id="ok-s3" class="success-text"><i class="fa-solid fa-circle-check"></i> Grupo Concluído!</div>
+        
+        <!-- PASSO 4: DOWNLOAD -->
+        <a href="https://alpharede.com/YHvpnxKcSSt" class="btn disabled" id="btn-s4" target="_blank" onclick="avancarPasso('s4')">
+            <span><i class="fa-solid fa-download"></i> 4. BAIXAR ARQUIVOS HACKER</span>
+            <i class="fa-solid fa-lock" id="icon-s4"></i>
+        </a>
+        <div id="load-s4" class="loading-box"><div class="spinner"></div> Validando download...</div>
+        <div id="ok-s4" class="success-text"><i class="fa-solid fa-circle-check"></i> Download Concluído!</div>
+
+        <!-- PASSO 5: NOVO GRUPO WHATSAPP -->
+        <a href="https://chat.whatsapp.com/Bye9CWnyog5CggS0y6RxXA" class="btn disabled" id="btn-s5" target="_blank" onclick="avancarPasso('s5')">
+            <span><i class="fa-brands fa-whatsapp"></i> 5. ENTRAR NO GRUPO WHATSAPP</span>
+            <i class="fa-solid fa-lock" id="icon-s5"></i>
+        </a>
+        <div id="load-s5" class="loading-box"><div class="spinner"></div> Validando entrada no grupo...</div>
+        <div id="ok-s5" class="success-text"><i class="fa-solid fa-circle-check"></i> Grupo Concluído!</div>
+
+        <!-- PASSO 6: USUÁRIO E SENHA VERSÃO MOD -->
+        <a href="https://alpharede.com/9QF0f4YXfju" class="btn disabled" id="btn-s6" target="_blank" onclick="avancarPasso('s6')">
+            <span><i class="fa-solid fa-key"></i> 6. USUÁRIO E SENHA VERSÃO MOD</span>
+            <i class="fa-solid fa-lock" id="icon-s6"></i>
+        </a>
+        <div id="load-s6" class="loading-box"><div class="spinner"></div> Verificando acesso...</div>
+        <div id="ok-s6" class="success-text"><i class="fa-solid fa-circle-check"></i> Concluído!</div>
+
+        <!-- PASSO 7 (FINAL): USUÁRIO E SENHA VERSÃO SCRIPT -->
+        <a href="https://alpharede.com/vfc4IrfqHKS" class="btn disabled" id="btn-s7" target="_blank">
+            <span><i class="fa-solid fa-key"></i> 7. USUÁRIO E SENHA VERSÃO SCRIPT</span>
+            <i class="fa-solid fa-lock" id="icon-s7"></i>
+        </a>
+    </div>
+
+    <script>
+        function avancarPasso(passo) {
+            if (passo === 's1') {
+                // Esconde a seta e mostra o carregamento
+                document.getElementById('icon-s1').style.display = 'none';
+                document.getElementById('load-s1').style.display = 'flex';
+                
+                // Simula 3 segundos de carregamento quando ele volta do YouTube
+                setTimeout(() => {
+                    document.getElementById('load-s1').style.display = 'none';
+                    document.getElementById('ok-s1').style.display = 'block';
+                    document.getElementById('btn-s1').classList.add('disabled'); // Desativa botão 1
+                    
+                    // Libera o botão 2
+                    const btn2 = document.getElementById('btn-s2');
+                    btn2.classList.remove('disabled');
+                    btn2.classList.add('active-yt2');
+                    document.getElementById('icon-s2').className = 'fa-solid fa-arrow-right';
+                }, 3000);
+                
+            } else if (passo === 's2') {
+                document.getElementById('icon-s2').style.display = 'none';
+                document.getElementById('load-s2').style.display = 'flex';
+                
+                setTimeout(() => {
+                    document.getElementById('load-s2').style.display = 'none';
+                    document.getElementById('ok-s2').style.display = 'block';
+                    document.getElementById('btn-s2').classList.add('disabled'); // Desativa botão 2
+                    
+                    // Libera o botão 3
+                    const btn3 = document.getElementById('btn-s3');
+                    btn3.classList.remove('disabled');
+                    btn3.classList.add('active-wa');
+                    document.getElementById('icon-s3').className = 'fa-solid fa-arrow-right';
+                }, 3000);
+                
+            } else if (passo === 's3') {
+                document.getElementById('icon-s3').style.display = 'none';
+                document.getElementById('load-s3').style.display = 'flex';
+                
+                setTimeout(() => {
+                    document.getElementById('load-s3').style.display = 'none';
+                    document.getElementById('ok-s3').style.display = 'block';
+                    document.getElementById('btn-s3').classList.add('disabled'); // Desativa botão 3
+                    
+                    // Libera o Passo 4 (Download)
+                    const btn4 = document.getElementById('btn-s4');
+                    btn4.classList.remove('disabled');
+                    btn4.classList.add('active-download');
+                    document.getElementById('icon-s4').className = 'fa-solid fa-unlock-alt';
+                }, 4000);
+
+            } else if (passo === 's4') {
+                document.getElementById('icon-s4').style.display = 'none';
+                document.getElementById('load-s4').style.display = 'flex';
+
+                setTimeout(() => {
+                    document.getElementById('load-s4').style.display = 'none';
+                    document.getElementById('ok-s4').style.display = 'block';
+                    document.getElementById('btn-s4').classList.add('disabled'); // Desativa passo 4
+
+                    // Libera o Passo 5 (Grupo WhatsApp extra)
+                    const btn5 = document.getElementById('btn-s5');
+                    btn5.classList.remove('disabled');
+                    btn5.classList.add('active-wa');
+                    document.getElementById('icon-s5').className = 'fa-solid fa-arrow-right';
+                }, 3000);
+
+            } else if (passo === 's5') {
+                document.getElementById('icon-s5').style.display = 'none';
+                document.getElementById('load-s5').style.display = 'flex';
+
+                setTimeout(() => {
+                    document.getElementById('load-s5').style.display = 'none';
+                    document.getElementById('ok-s5').style.display = 'block';
+                    document.getElementById('btn-s5').classList.add('disabled'); // Desativa passo 5
+
+                    // Libera o Passo 6 (Usuário e Senha Versão Mod)
+                    const btn6 = document.getElementById('btn-s6');
+                    btn6.classList.remove('disabled');
+                    btn6.classList.add('active-download');
+                    document.getElementById('icon-s6').className = 'fa-solid fa-unlock-alt';
+                }, 3000);
+
+            } else if (passo === 's6') {
+                document.getElementById('icon-s6').style.display = 'none';
+                document.getElementById('load-s6').style.display = 'flex';
+
+                setTimeout(() => {
+                    document.getElementById('load-s6').style.display = 'none';
+                    document.getElementById('ok-s6').style.display = 'block';
+                    document.getElementById('btn-s6').classList.add('disabled'); // Desativa passo 6
+
+                    // Libera o Passo 7 (Usuário e Senha Versão Script) - final
+                    const btn7 = document.getElementById('btn-s7');
+                    btn7.classList.remove('disabled');
+                    btn7.classList.add('active-download');
+                    document.getElementById('icon-s7').className = 'fa-solid fa-unlock-alt';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
