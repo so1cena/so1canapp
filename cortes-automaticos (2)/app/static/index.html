@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🎬 Cortes Automáticos</title>
+<style>
+  :root {
+    --bg: #0d0d14;
+    --card: #15151f;
+    --border: #262636;
+    --purple: #7c3aed;
+    --purple-hover: #6d28d9;
+    --text: #f2f2f5;
+    --text-dim: #9a9aab;
+    --red: #ef4444;
+    --red-bg: #2a1418;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 28px; margin-bottom: 8px; }
+  .subtitle { text-align: center; color: var(--text-dim); margin-bottom: 32px; line-height: 1.5; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  input[type=text] {
+    width: 100%;
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    color: var(--text);
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+  button {
+    width: 100%;
+    background: var(--purple);
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:hover { background: var(--purple-hover); }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .progress-track {
+    background: #23232f;
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+    margin-top: 14px;
+  }
+  .progress-fill {
+    background: var(--purple);
+    height: 100%;
+    width: 15%;
+    transition: width 0.4s ease;
+  }
+  .status-text { margin-top: 10px; color: var(--text-dim); font-size: 14px; }
+  .erro-box {
+    border: 1px solid var(--red);
+    background: var(--red-bg);
+    color: #fca5a5;
+    border-radius: 10px;
+    padding: 16px;
+    line-height: 1.5;
+  }
+  .clipe-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .clipe-item:last-child { border-bottom: none; }
+  .clipe-item a { color: var(--purple); text-decoration: none; font-weight: 600; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎬 Cortes Automáticos</h1>
+  <p class="subtitle">Cole a URL de uma live/podcast (YouTube ou Twitch) e deixe a IA local encontrar os melhores momentos.</p>
+
+  <div class="card">
+    <input type="text" id="urlInput" placeholder="https://www.youtube.com/live/...">
+    <button id="gerarBtn" onclick="gerarCortes()">Gerar cortes</button>
+  </div>
+
+  <div class="card hidden" id="progressCard">
+    <div class="status-text" id="statusText">Iniciando...</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="erro-box hidden" id="erroBox"></div>
+
+  <div class="card hidden" id="resultCard">
+    <h3 style="margin-top:0">Clipes gerados</h3>
+    <div id="listaClipes"></div>
+  </div>
+</div>
+
+<script>
+let intervalId = null;
+
+async function gerarCortes() {
+  const url = document.getElementById("urlInput").value.trim();
+  if (!url) return;
+
+  document.getElementById("gerarBtn").disabled = true;
+  document.getElementById("progressCard").classList.remove("hidden");
+  document.getElementById("erroBox").classList.add("hidden");
+  document.getElementById("resultCard").classList.add("hidden");
+  document.getElementById("progressFill").style.width = "10%";
+
+  const resp = await fetch("/api/gerar-cortes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url })
+  });
+  const data = await resp.json();
+
+  if (!resp.ok) {
+    mostrarErro(data.erro || "Erro ao iniciar.");
+    return;
+  }
+
+  intervalId = setInterval(() => verificarStatus(data.job_id), 2000);
+}
+
+async function verificarStatus(jobId) {
+  const resp = await fetch("/api/status/" + jobId);
+  const job = await resp.json();
+
+  document.getElementById("statusText").textContent = job.status || "Processando...";
+
+  if (job.erro) {
+    clearInterval(intervalId);
+    mostrarErro(job.erro);
+    return;
+  }
+
+  if (job.concluido) {
+    clearInterval(intervalId);
+    document.getElementById("progressFill").style.width = "100%";
+    mostrarResultado(job.clipes);
+  }
+}
+
+function mostrarErro(msg) {
+  document.getElementById("gerarBtn").disabled = false;
+  document.getElementById("progressCard").classList.add("hidden");
+  const box = document.getElementById("erroBox");
+  box.textContent = msg;
+  box.classList.remove("hidden");
+}
+
+function mostrarResultado(clipes) {
+  document.getElementById("gerarBtn").disabled = false;
+  document.getElementById("progressCard").classList.add("hidden");
+  const lista = document.getElementById("listaClipes");
+  lista.innerHTML = "";
+  clipes.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "clipe-item";
+    div.innerHTML = `<span>${c.titulo}</span><a href="/clipes/${c.arquivo}" download>Baixar</a>`;
+    lista.appendChild(div);
+  });
+  document.getElementById("resultCard").classList.remove("hidden");
+}
+</script>
+</body>
+</html>
